@@ -1,4 +1,6 @@
-export const ResultComponent = ({result, error} : {result: string | number, error: string | null} )=>{
+import { Cards } from "../Cards/Cards"
+
+export const ResultComponent = ({result, error} : {result: string | number | JSX.Element, error: string | null} )=>{
 
     return(
         <div className='flex justify-center mt-8'>
