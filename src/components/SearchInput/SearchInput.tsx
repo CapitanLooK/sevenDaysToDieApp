@@ -2,12 +2,13 @@
 import { useState, ChangeEvent } from "react"
 import { sevenDaysData } from "@/data/sevenDaysData";
 import { ResultComponent } from "../ResultComponent/ResultComponent";
-import { todayMessage, errorMessage, inputPlaceholder, searchText} from "@/data/messages";
+import { errorMessage, inputPlaceholder, searchText} from "@/data/messages";
+import { Cards } from "../Cards/Cards";
 
 export const SearchInput = () => {
 
   const [inputValue, setInputValue] = useState<number>(0);
-  const [result, setResult] = useState<number | string>("");
+  const [result, setResult] = useState<number | string | JSX.Element>("");
   const [error, setError] = useState<string | null>(null);
   const [disabled, setDisabled] = useState<boolean>(true);
 
@@ -33,8 +34,10 @@ export const SearchInput = () => {
     const nextBloodMoon: number | undefined = sevenDaysData.find((num) => num > inputValue);
     const daysLeft = nextBloodMoon! - inputValue;
     const isBloodMoon = sevenDaysData.includes(inputValue)
+
     if (isBloodMoon) {
-      setResult(todayMessage);
+      setResult(<Cards nextBloodMoon={nextBloodMoon! - 7}/>);
+      setDisabled(true)
     } else {
       setResult(daysLeft);
     }
