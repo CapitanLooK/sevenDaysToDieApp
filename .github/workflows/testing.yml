@@ -1,0 +1,34 @@
+name: PR Testing
+
+on:
+  pull_request:
+    branches:
+      - main
+
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and calculate coverage
+        run: |
+          npm run test -- --coverage
+          COVERAGE_THRESHOLD=80  # Porcentaje mínimo de cobertura deseado
+          TOTAL_COVERAGE=$(cat coverage/coverage-summary.json | jq -r '.total.lines.pct')
+          if (( $(echo "$TOTAL_COVERAGE < $COVERAGE_THRESHOLD" | bc -l) )); then
+            echo "Error: La cobertura de pruebas es inferior al mínimo requerido."
+            exit 1
+          fi
