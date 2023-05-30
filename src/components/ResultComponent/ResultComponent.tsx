@@ -1,5 +1,3 @@
-import { Cards } from "../Cards/Cards"
-
 export const ResultComponent = ({result, error} : {result: string | number | JSX.Element, error: string | null} )=>{
 
     return(
